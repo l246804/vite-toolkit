@@ -1,0 +1,37 @@
+{
+  "name": "@lei-xx/vite-toolkit",
+  "version": "0.0.0",
+  "description": "Vite's toolkit.",
+  "author": "leihaohao",
+  "license": "MIT",
+  "keywords": [
+    "vite",
+    "toolkit"
+  ],
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "unbuild"
+  },
+  "peerDependencies": {
+    "vite": "^4 || ^3 || ^2"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "kolorist": "^1.6.0"
+  },
+  "devDependencies": {
+    "@lei-xx/eslint-config": "^0.5.0",
+    "@release-it/conventional-changelog": "^5.1.1",
+    "@types/debug": "^4.1.7",
+    "@types/node": "^18.11.18",
+    "eslint": "^8.33.0",
+    "eslint-define-config": "^1.14.0",
+    "prettier": "^2.8.3",
+    "release-it": "^15.6.0",
+    "typescript": "^4.9.5",
+    "unbuild": "^1.1.1",
+    "vite": "^4.0.4"
+  }
+}
