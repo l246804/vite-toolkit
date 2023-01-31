@@ -4,6 +4,9 @@
   "description": "Vite's toolkit.",
   "author": "leihaohao",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "vite",
     "toolkit"
@@ -11,8 +14,14 @@
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "build": "unbuild"
+    "build": "unbuild",
+    "release": "release-it"
   },
   "peerDependencies": {
     "vite": "^4 || ^3 || ^2"
