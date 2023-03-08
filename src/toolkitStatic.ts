@@ -39,6 +39,8 @@ export interface ToolkitOptions<VE extends _ViteEnv, MM extends _ModeMapping = {
 }
 
 export class ToolkitStatic<VE extends _ViteEnv, MM extends _ModeMapping = {}> {
+  private static _instance = null
+
   private _configEnv: ConfigEnv
   public get configEnv() {
     return this._configEnv
@@ -56,6 +58,27 @@ export class ToolkitStatic<VE extends _ViteEnv, MM extends _ModeMapping = {}> {
       allowMountToProcessEnv: options?.allowMountToProcessEnv ?? false,
       envConverter: options?.envConverter ?? {}
     }
+  }
+
+  /**
+   * 创建唯一实例
+   */
+  static createSingleInstance<VE extends _ViteEnv, MM extends _ModeMapping = {}>(
+    configEnv: ConfigEnv,
+    options?: DeepPartial<ToolkitOptions<VE, MM>>
+  ) {
+    if (!this._instance) this._instance = new ToolkitStatic(configEnv, options)
+    return this._instance
+  }
+
+  /**
+   * 获取唯一实例
+   */
+  static getSingleInstance<VE extends _ViteEnv, MM extends _ModeMapping = {}>(): ToolkitStatic<
+    VE,
+    MM
+  > | null {
+    return this._instance
   }
 
   loadEnv(mode = this.configEnv.mode, envDir = process.cwd(), prefix?: string | string[]) {

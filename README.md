@@ -65,3 +65,49 @@ export default defineConfig((configEnv) => {
   }
 })
 ```
+
+### 多文件共享唯一实例
+
+用于在 `vite.config.ts` 中创建全局唯一实例，在其他文件中能轻松获取，避免传递额外参数。
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import { ToolkitStatic } from '@lei-xx/vite-toolkit'
+
+export default defineConfig((configEnv) => {
+  const toolkit = ToolkitStatic.createSingleInstance<ViteEnv>(configEnv, { allowMountToProcessEnv: true })
+
+  /**
+   * {
+   *   VITE_APP_TITLE: '应用标题',
+   *   VITE_APP_TIMEOUT: 50000,
+   *   VITE_APP_PROXY: [{ prefix: '/api', target: 'http://127.0.0.1:5555' }]
+   * }
+   */
+  const env = toolkit.loadEnv()
+
+  return {
+    // ...
+    define: {
+      // 挂载全局环境变量
+      __ENV__: env
+    }
+  }
+})
+```
+
+```ts
+// plugin.ts
+import { ToolkitStatic } from '@lei-xx/vite-toolkit'
+
+export const createPlugins = () => {
+  const toolkit = ToolkitStatic.getSingleInstance<ViteEnv>()
+
+  console.log(toolkit.isDev())
+
+  return [
+    // ...
+  ]
+}
+```
