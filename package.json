@@ -43,7 +43,7 @@
     "build": "unbuild",
     "plop": "plop",
     "cz": "cz",
-    "release": "cross-env GITLAB_TOKEN=5Y_Rs6C9ecmP-BRD3s96 release-it"
+    "release": "release-it"
   },
   "peerDependencies": {
     "vite": "^4 || ^3 || ^2"
