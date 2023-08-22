@@ -1,14 +1,27 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
     "target": "ESNext",
-    "lib": ["ESNext"],
-    "moduleResolution": "Node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "strict": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
-    "declaration": true,
-    "emitDeclarationOnly": true
+    "noImplicitAny": false,
+    "removeComments": false,
+    "importHelpers": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "downlevelIteration": true,
+    "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
-  "include": ["src", "package.json"]
+  "include": ["src/**/*.ts"]
 }

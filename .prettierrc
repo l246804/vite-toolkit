@@ -5,8 +5,13 @@
   "printWidth": 100,
   "semi": false,
   "singleAttributePerLine": true,
-  "trailingComma": "none",
+  "trailingComma": "all",
   "tabWidth": 2,
   "useTabs": false,
-  "singleQuote": true
+  "singleQuote": true,
+  "htmlWhitespaceSensitivity": "css",
+  "jsxSingleQuote": false,
+  "proseWrap": "preserve",
+  "quoteProps": "as-needed",
+  "vueIndentScriptAndStyle": false
 }
