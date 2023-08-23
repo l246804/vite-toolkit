@@ -30,7 +30,7 @@ export function transformEnv<VE extends ViteEnv>(
       } else {
         debug(`根据 key "${key}" 未获取到自定义转换器，采用默认转换器`)
         // eslint-disable-next-line no-new-func
-        val = new Function(`return ${val}`)()
+        val = val === '' ? val : new Function(`return ${val}`)()
       }
     } catch (err: unknown) {
       debug(red(`默认转换失败：${(err as Error).message}`))
