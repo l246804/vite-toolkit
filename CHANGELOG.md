@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/l246804/vite-toolkit/compare/v0.0.4...v0.0.5) (2023-08-23)
+
+
+### Bug Fixes
+
+* 🐛 修复 loadEnv 返回类型错误 ([236d926](https://github.com/l246804/vite-toolkit/commit/236d92657365e006132720289561465e806066ab))
+
 ## [0.0.4](https://github.com/l246804/vite-toolkit/compare/v0.0.3...v0.0.4) (2023-08-23)
 
 
