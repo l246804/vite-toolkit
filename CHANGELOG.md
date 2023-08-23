@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.2](https://github.com/l246804/vite-toolkit/compare/v0.0.1...v0.0.2) (2023-08-23)
+
+
+### Bug Fixes
+
+* 🐛 修复 debug 导入报错 ([360139f](https://github.com/l246804/vite-toolkit/commit/360139f36f6734b05a3a9c53a5756ad5ede9c420))
+
 ## [0.0.1](https://github.com/l246804/vite-toolkit/compare/0.2.0...v0.0.1) (2023-08-22)
 
 
