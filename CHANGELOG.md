@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/l246804/vite-toolkit/compare/v0.0.3...v0.0.4) (2023-08-23)
+
+
+### Chores
+
+* 🤖 优化类型定义 ([c026157](https://github.com/l246804/vite-toolkit/commit/c026157751ca9ad3d641549517c3f27859e344b5))
+
 ## [0.0.3](https://github.com/l246804/vite-toolkit/compare/v0.0.2...v0.0.3) (2023-08-23)
 
 
