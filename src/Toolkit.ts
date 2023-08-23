@@ -3,10 +3,10 @@ import { type ConfigEnv, loadEnv } from 'vite'
 import { merge } from 'lodash-es'
 import { BASE_MODE_MAPPING } from './modeMapping'
 import type { BaseModeMapping, ModeMapping, ModeMappingKey } from './modeMapping'
-import type { Transformer, ViteEnv } from './transformEnv'
+import type { Transformer, Env } from './transformEnv'
 import { transformEnv } from './transformEnv'
 
-export interface ToolkitOptions<VE extends ViteEnv, MM extends ModeMapping = ModeMapping> {
+export interface ToolkitOptions<VE extends Env, MM extends ModeMapping = ModeMapping> {
   /**
    * `Vite` 的 `mode` 映射
    * @default
@@ -52,7 +52,7 @@ export interface ToolkitOptions<VE extends ViteEnv, MM extends ModeMapping = Mod
   envTransformer?: Transformer<VE>
 }
 
-export class Toolkit<VE extends ViteEnv, MM extends ModeMapping = ModeMapping> {
+export class Toolkit<VE extends Env, MM extends ModeMapping = ModeMapping> {
   private static _instance
 
   options: Required<ToolkitOptions<VE, MM>>
@@ -75,7 +75,7 @@ export class Toolkit<VE extends ViteEnv, MM extends ModeMapping = ModeMapping> {
   /**
    * 创建唯一实例
    */
-  static createInstance<VE extends ViteEnv, MM extends ModeMapping>(
+  static createInstance<VE extends Env, MM extends ModeMapping = ModeMapping>(
     configEnv: ConfigEnv,
     options?: ToolkitOptions<VE, MM>,
   ) {
@@ -86,7 +86,7 @@ export class Toolkit<VE extends ViteEnv, MM extends ModeMapping = ModeMapping> {
   /**
    * 获取唯一实例
    */
-  static getInstance<VE extends ViteEnv, MM extends ModeMapping>(): Toolkit<VE, MM> | null {
+  static getInstance<VE extends Env, MM extends ModeMapping = ModeMapping>(): Toolkit<VE, MM> | null {
     return this._instance
   }
 
@@ -132,9 +132,9 @@ export class Toolkit<VE extends ViteEnv, MM extends ModeMapping = ModeMapping> {
   }
 }
 
-export function createToolkit<VE extends ViteEnv, MM extends ModeMapping>(
+export function createToolkit<VE extends Env, MM extends ModeMapping = ModeMapping>(
   configEnv: ConfigEnv,
   options?: ToolkitOptions<VE, MM>,
 ) {
-  return new Toolkit(configEnv, options)
+  return new Toolkit<VE, MM>(configEnv, options)
 }

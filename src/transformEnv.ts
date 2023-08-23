@@ -4,17 +4,17 @@ import type { Recordable } from '@rhao/types-base'
 import { isString } from 'lodash-es'
 import { createDebug } from './utils'
 
-export type ViteEnv = Recordable<any>
+export type Env = Recordable<any>
 
-export type Transformer<VE extends ViteEnv> = {
-  [K in keyof VE]?: (value: string) => VE[K]
+export type Transformer<E extends Env> = {
+  [K in keyof E]?: (value: string) => E[K]
 }
 
-export function transformEnv<VE extends ViteEnv>(
+export function transformEnv<VE extends Env>(
   viteEnv: VE,
   allowMountToProcessEnv: boolean,
   transformer: Transformer<VE>,
-): ViteEnv {
+) {
   const debug = createDebug('transformEnv')
   debug('开始转换 "viteEnv"')
 
@@ -50,5 +50,5 @@ export function transformEnv<VE extends ViteEnv>(
   }, {} as Recordable)
 
   debug('转换 "viteEnv" 结束')
-  return res
+  return res as VE
 }
