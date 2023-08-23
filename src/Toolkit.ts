@@ -95,7 +95,7 @@ export class Toolkit<VE extends Env, MM extends ModeMapping = ModeMapping> {
    */
   loadEnv(mode = this.configEnv.mode, envDir = cwd(), prefixes?: string | string[]) {
     const { allowMountToProcessEnv, envTransformer } = this.options
-    const viteEnv = loadEnv(mode, envDir, prefixes)
+    const viteEnv = loadEnv(mode, envDir, prefixes) as VE
     return transformEnv(viteEnv, allowMountToProcessEnv, envTransformer)
   }
 
