@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/l246804/vite-toolkit/compare/v0.0.2...v0.0.3) (2023-08-23)
+
+
+### Chores
+
+* 🤖 处理 env 值为空字符串时不进行转换 ([c8bcb2c](https://github.com/l246804/vite-toolkit/commit/c8bcb2cd66e4722eeed57ecc7e6423bf1ad6f89c))
+
 ## [0.0.2](https://github.com/l246804/vite-toolkit/compare/v0.0.1...v0.0.2) (2023-08-23)
 
 
