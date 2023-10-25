@@ -5,6 +5,7 @@ import { BASE_MODE_MAPPING } from './modeMapping'
 import type { BaseModeMapping, ModeMapping, ModeMappingKey } from './modeMapping'
 import type { Transformer, Env } from './transformEnv'
 import { transformEnv } from './transformEnv'
+import { createProxy } from './createProxy'
 
 export interface ToolkitOptions<VE extends Env, MM extends ModeMapping = ModeMapping> {
   /**
@@ -130,6 +131,8 @@ export class Toolkit<VE extends Env, MM extends ModeMapping = ModeMapping> {
   isServe() {
     return this.eqCommand('serve')
   }
+
+  createProxy = createProxy
 }
 
 export function createToolkit<VE extends Env, MM extends ModeMapping = ModeMapping>(

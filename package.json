@@ -49,7 +49,7 @@
     "vite": "^4 || ^3 || ^2"
   },
   "dependencies": {
-    "@rhao/types-base": "^0.1.3",
+    "@rhao/types-base": "^0.2.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {
