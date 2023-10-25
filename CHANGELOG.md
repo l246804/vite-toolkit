@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://github.com/l246804/vite-toolkit/compare/v0.0.5...v0.1.0) (2023-10-25)
+
+
+### Features
+
+* 🎸 add createProxy ([7c4072e](https://github.com/l246804/vite-toolkit/commit/7c4072e928c77a05cbc0686c2e401a4328e91b73))
+
 ## [0.0.5](https://github.com/l246804/vite-toolkit/compare/v0.0.4...v0.0.5) (2023-08-23)
 
 
