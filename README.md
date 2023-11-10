@@ -60,8 +60,8 @@ export default defineConfig((configEnv) => {
   return {
     // ...
     define: {
-      // 挂载全局环境变量
-      __ENV__: env
+      // 扁平化并挂载至全局环境变量
+      ...toolkit.flattenEnv(env)
     }
   }
 })
@@ -91,8 +91,8 @@ export default defineConfig((configEnv) => {
   return {
     // ...
     define: {
-      // 挂载全局环境变量
-      __ENV__: env
+      // 扁平化并挂载至全局环境变量
+      ...toolkit.flattenEnv(env)
     }
   }
 })
@@ -115,9 +115,9 @@ export function createPlugins() {
 
 ## 客户端使用
 
-> 由于 `define` 提供的 `__ENV__` 会在编译时以字面量形式代替，由于 `__ENV__` 是对象类型，多次使用会被硬编码进源码中，所以这里在一个文件内单独导出并使用，可搭配 `unplugin-auto-import` 插件自动导入效果更佳。
+> 由于 `define` 提供的 `__ENV__` 会在编译时以字面量形式代替，当 `__ENV__` 是对象类型，多次使用会被硬编码进源码中，所以推荐使用提供的 `flattenEnv` 将环境变量扁平化后再挂载，可以达到完美效果。
 
-### 直接使用 __ENV__
+### 直接使用
 
 ```ts
 // 编译前
@@ -127,7 +127,6 @@ console.log(__ENV__.VITE_APP_TITLE)
 // 第二次
 console.log(__ENV__.VITE_APP_TITLE)
 
-
 // 编译后
 // 第一次
 console.log({ VITE_APP_TITLE: '应用标题', VITE_APP_TIMEOUT: 50000, VITE_APP_PROXY: [{ prefix: '/api', target: 'http://127.0.0.1:5555' }] }.VITE_APP_TITLE)
@@ -136,7 +135,42 @@ console.log({ VITE_APP_TITLE: '应用标题', VITE_APP_TIMEOUT: 50000, VITE_APP_
 console.log({ VITE_APP_TITLE: '应用标题', VITE_APP_TIMEOUT: 50000, VITE_APP_PROXY: [{ prefix: '/api', target: 'http://127.0.0.1:5555' }] }.VITE_APP_TITLE)
 ```
 
-### 提取单独文件管理
+### 扁平化环境变量
+
+```ts
+// vite.config.ts
+
+export default defineConfig((configEnv) => {
+  const toolkit = createToolkit(configEnv)
+  const env = toolkit.loadEnv()
+  return {
+    // ...
+    define: {
+      ...toolkit.flattenEnv(env, '__ENV__')
+      // 注意：扁平化后请不要再 `define` 同 `name` 的变量，否则编译时可能回导致失败！
+      // ❌ __ENV__: env, // 删掉该行
+    }
+  }
+})
+```
+
+```ts
+// 编译前
+// 第一次
+console.log(__ENV__.VITE_APP_TITLE)
+
+// 第二次
+console.log(__ENV__.VITE_APP_TITLE)
+
+// 编译后
+// 第一次
+console.log('应用标题')
+
+// 第二次
+console.log('应用标题')
+```
+
+### ~~提取单独文件管理~~
 
 ```ts
 // src/env.ts
@@ -153,7 +187,6 @@ console.log(ENV.VITE_APP_TITLE)
 // 第二次
 console.log(ENV.VITE_APP_TITLE)
 
-
 // 编译后
 // 第一次
 console.log(ENV.VITE_APP_TITLE)
@@ -162,7 +195,7 @@ console.log(ENV.VITE_APP_TITLE)
 console.log(ENV.VITE_APP_TITLE)
 ```
 
-### 安装 `unplugin-auto-import`
+### ~~安装 `unplugin-auto-import`~~
 
 ```ts
 // vite.config.ts

@@ -6,6 +6,7 @@ import type { BaseModeMapping, ModeMapping, ModeMappingKey } from './modeMapping
 import type { Transformer, Env } from './transformEnv'
 import { transformEnv } from './transformEnv'
 import { createProxy } from './createProxy'
+import { flattenEnv } from './flattenEnv'
 
 export interface ToolkitOptions<VE extends Env, MM extends ModeMapping = ModeMapping> {
   /**
@@ -99,6 +100,8 @@ export class Toolkit<VE extends Env, MM extends ModeMapping = ModeMapping> {
     const viteEnv = loadEnv(mode, envDir, prefixes) as VE
     return transformEnv(viteEnv, allowMountToProcessEnv, envTransformer)
   }
+
+  flattenEnv = flattenEnv
 
   getMode(key: ModeMappingKey<MM>) {
     return this.options.modeMapping[key]
