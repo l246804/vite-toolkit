@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/l246804/vite-toolkit/compare/v0.0.5...v0.2.0) (2023-11-10)
+
+
+### Features
+
+* 🎸 add createProxy ([7c4072e](https://github.com/l246804/vite-toolkit/commit/7c4072e928c77a05cbc0686c2e401a4328e91b73))
+* 🎸 add flattenEnv ([7ca044c](https://github.com/l246804/vite-toolkit/commit/7ca044c5e40cf3b1026c297815d4c8b3de45210f))
+
+
+### Docs
+
+* ✏️ 补充 README.md ([b4146e2](https://github.com/l246804/vite-toolkit/commit/b4146e2872d09c6f577b22b57724176d20258dae))
+
 ## [0.1.0](https://github.com/l246804/vite-toolkit/compare/v0.0.5...v0.1.0) (2023-10-25)
 
 
