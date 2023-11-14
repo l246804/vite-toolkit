@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/l246804/vite-toolkit/compare/v0.2.0...v0.2.1) (2023-11-14)
+
+
+### Bug Fixes
+
+* 🐛 修复 flattenEnv 扁平化非正常属性名报错问题 ([6e784a9](https://github.com/l246804/vite-toolkit/commit/6e784a9a67bed26d29b0e76655ec0eab5e7a29ff))
+
 ## [0.2.0](https://github.com/l246804/vite-toolkit/compare/v0.0.5...v0.2.0) (2023-11-10)
 
 
