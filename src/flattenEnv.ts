@@ -1,16 +1,15 @@
 import type { Recordable } from '@rhao/types-base'
-import { isObjectLike, isString } from 'lodash-es'
+import { isPlainObject, isString } from 'lodash-es'
 
 const ignoreAttrRE = /(^\d|[^\w])/g
 
 /**
- * 扁平化环境变量，用于 `define` 时替换复杂变量
+ * 扁平化环境变量，用于 `define` 时替换深层对象变量值
  *
- * - 数组取值：仅支持 `env[index]` 格式
- * - 非数组取值：仅支持 `env.aaa.bbb` 格式
+ * - 正常属性名取值：仅支持 env.a.b.c
  * - 非正常属性名：以数字开头或包含非字母、数字、下划线的属性名由于无法被 `define`，将被忽略
  *
- * ***注意：扁平化后请不要再 `define` 同 `name` 的变量，否则编译时可能回导致失败！***
+ * ***注意：非普通对象类型数据不支持深度扁平化属性。***
  *
  * @param name 环境变量名
  * @param env 环境变量
@@ -23,12 +22,11 @@ const ignoreAttrRE = /(^\d|[^\w])/g
  * {
  *   '__ENV__.a.b': 1,
  *   '__ENV__.a.c': [1, 2, 3],
- *   '__ENV__.a.c[0]': 1,
- *   '__ENV__.a.c[1]': 2,
- *   '__ENV__.a.c[2]': 3,
  *   '__ENV__.a': { b: 1, c: [1, 2, 3] },
  *   '__ENV__.d': '"4"',
- *   // '__ENV__.e-5': 6 // ❌ 由于属性名非正常格式，该属性将被忽略
+ *
+ *   // ❌ 由于属性名非正常格式，该属性将被忽略
+ *   // '__ENV__.e-5': 6,
  * }
  * ```
  */
@@ -37,17 +35,16 @@ export function flattenEnv(name: string, env: Recordable) {
 
   const obj = {} as Recordable<any>
   const deep = (env: Recordable, paths: string[]) => {
-    const isArr = Array.isArray(env)
     Object.entries(env).forEach(([key, value]) => {
       // 忽略无法 define 的属性
       if (ignoreAttrRE.test(key)) return
 
-      const _paths = paths.concat(isArr ? `[${key}]` : key)
+      const _paths = paths.concat(key)
       // 如果是 object 类型则递归遍历
-      if (isObjectLike(value)) deep(value, _paths)
+      if (isPlainObject(value)) deep(value, _paths)
 
       // 拼接完整地址
-      key = _paths.join('.').replace(/\.(?=\[\d+\])/g, '')
+      key = _paths.join('.')
       obj[key] = isString(value) ? JSON.stringify(value) : value
     })
   }

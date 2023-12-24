@@ -3,7 +3,7 @@ import { type ConfigEnv, loadEnv } from 'vite'
 import { merge } from 'lodash-es'
 import { BASE_MODE_MAPPING } from './modeMapping'
 import type { BaseModeMapping, ModeMapping, ModeMappingKey } from './modeMapping'
-import type { Transformer, Env } from './transformEnv'
+import type { Env, Transformer } from './transformEnv'
 import { transformEnv } from './transformEnv'
 import { createProxy } from './createProxy'
 import { flattenEnv } from './flattenEnv'
@@ -88,7 +88,10 @@ export class Toolkit<VE extends Env, MM extends ModeMapping = ModeMapping> {
   /**
    * 获取唯一实例
    */
-  static getInstance<VE extends Env, MM extends ModeMapping = ModeMapping>(): Toolkit<VE, MM> | null {
+  static getInstance<VE extends Env, MM extends ModeMapping = ModeMapping>(): Toolkit<
+    VE,
+    MM
+  > | null {
     return this._instance
   }
 

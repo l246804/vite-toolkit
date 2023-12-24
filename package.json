@@ -46,7 +46,7 @@
     "release": "release-it"
   },
   "peerDependencies": {
-    "vite": "^4 || ^3 || ^2"
+    "vite": "^5 || ^4 || ^3 || ^2"
   },
   "dependencies": {
     "@rhao/types-base": "^0.2.1",

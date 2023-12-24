@@ -5,8 +5,9 @@
 ## 功能清单
 
 - [x] 检查运行环境
-- [x] 解析环境变量，区分真实数据类型
+- [x] 解析环境变量，支持 `JS` 原生数据类型
 - [x] 环境变量挂载至 `process.env`
+- [x] 创建开发服务器代理配置
 
 ## 示例
 
@@ -59,6 +60,11 @@ export default defineConfig((configEnv) => {
 
   return {
     // ...
+    server: {
+      // 根据环境变量创建服务代理配置
+      proxy: toolkit.createProxy(env.VITE_APP_PROXY),
+    },
+
     define: {
       // 扁平化并挂载至全局环境变量
       ...toolkit.flattenEnv(env)
@@ -149,8 +155,6 @@ export default defineConfig((configEnv) => {
     // ...
     define: {
       ...toolkit.flattenEnv(env, '__ENV__')
-      // 注意：扁平化后请不要再 `define` 同 `name` 的变量，否则编译时可能回导致失败！
-      // ❌ __ENV__: env, // 删掉该行
     }
   }
 })
@@ -172,51 +176,6 @@ console.log('应用标题')
 console.log('应用标题')
 ```
 
-### ~~提取单独文件管理~~
+## 迁移至 v1.x
 
-```ts
-// src/env.ts
-export const ENV = __ENV__
-```
-
-```ts
-import { ENV } from '@/env'
-
-// 编译前
-// 第一次
-console.log(ENV.VITE_APP_TITLE)
-
-// 第二次
-console.log(ENV.VITE_APP_TITLE)
-
-// 编译后
-// 第一次
-console.log(ENV.VITE_APP_TITLE)
-
-// 第二次
-console.log(ENV.VITE_APP_TITLE)
-```
-
-### ~~安装 `unplugin-auto-import`~~
-
-```ts
-// vite.config.ts
-import AutoImport from 'unplugin-auto-import/vite'
-
-export default defineConfig({
-  // ...
-  plugins: [
-    // ...
-    AutoImport({
-      imports: [
-        {
-          // 自动导入 ENV 变量
-          '@/env': ['ENV']
-        }
-      ],
-      dts: 'src/types/auto-imports.d.ts',
-      vueTemplate: true,
-    })
-  ]
-})
-```
+- `flattenEnv()` 不再支持非普通对象类型数据的深度扁平化属性。
