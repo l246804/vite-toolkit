@@ -7,7 +7,7 @@
 - [x] 检查运行环境
 - [x] 解析环境变量，支持 `JS` 原生数据类型
 - [x] 环境变量挂载至 `process.env`
-- [x] 创建开发服务器代理配置
+- [x] 转换开发服务器代理配置
 
 ## 示例
 
@@ -61,8 +61,8 @@ export default defineConfig((configEnv) => {
   return {
     // ...
     server: {
-      // 根据环境变量创建服务代理配置
-      proxy: toolkit.createProxy(env.VITE_APP_PROXY),
+      // 根据环境变量转换服务代理配置
+      proxy: toolkit.transformProxy(env.VITE_APP_PROXY),
     },
 
     define: {
@@ -179,3 +179,9 @@ console.log('应用标题')
 ## 迁移至 v1.x
 
 - `flattenEnv()` 不再支持非普通对象类型数据的深度扁平化属性。
+
+## 迁移至 v2.x
+
+- `modeMapping` 被移除
+- `getMode`、`eqMode` 更改使用方式
+- `isDev`、`isProd` 更改实现方式

@@ -1,30 +1,15 @@
-import { cwd } from 'node:process'
+import { cwd, env } from 'node:process'
 import { type ConfigEnv, loadEnv } from 'vite'
-import { merge } from 'lodash-es'
-import { BASE_MODE_MAPPING } from './modeMapping'
-import type { BaseModeMapping, ModeMapping, ModeMappingKey } from './modeMapping'
 import type { Env, Transformer } from './transformEnv'
 import { transformEnv } from './transformEnv'
-import { createProxy } from './createProxy'
+import { transformProxy } from './transformProxy'
 import { flattenEnv } from './flattenEnv'
 
-export interface ToolkitOptions<VE extends Env, MM extends ModeMapping = ModeMapping> {
-  /**
-   * `Vite` 的 `mode` 映射
-   * @default
-   * ```ts
-   * {
-   *   dev: 'development',
-   *   prod: 'production',
-   *   test: 'test'
-   * }
-   * ```
-   */
-  modeMapping?: MM & Partial<BaseModeMapping>
+export interface ToolkitOptions<VE extends Env> {
   /**
    * 允许通过 `loadEnv` 加载的环境变量挂载至 `process.env`
    *
-   * ***注意：由于 `process.env` 值均为 `string`，除过 `string` 类型的数据将使用 `JSON.stringify` 序列化！***
+   * ***注意：由于 `process.env` 值均为 `string`，非 `string` 类型的数据将使用 `JSON.stringify` 序列化！***
    *
    * @example
    * ```ts
@@ -54,45 +39,38 @@ export interface ToolkitOptions<VE extends Env, MM extends ModeMapping = ModeMap
   envTransformer?: Transformer<VE>
 }
 
-export class Toolkit<VE extends Env, MM extends ModeMapping = ModeMapping> {
+export class Toolkit<VE extends Env> {
   private static _instance
 
-  options: Required<ToolkitOptions<VE, MM>>
+  /**
+   * 配置项
+   */
+  options: Required<ToolkitOptions<VE>>
 
   constructor(
     public configEnv: ConfigEnv,
-    options?: ToolkitOptions<VE, MM>,
+    options: ToolkitOptions<VE> = {},
   ) {
-    this.options = merge(
-      {},
-      {
-        allowMountToProcessEnv: false,
-        envTransformer: {},
-        modeMapping: BASE_MODE_MAPPING,
-      },
-      options,
-    ) as Required<ToolkitOptions<VE, MM>>
+    this.options = {
+      allowMountToProcessEnv: false,
+      envTransformer: {},
+      ...options,
+    } as Required<ToolkitOptions<VE>>
   }
 
   /**
    * 创建唯一实例
    */
-  static createInstance<VE extends Env, MM extends ModeMapping = ModeMapping>(
-    configEnv: ConfigEnv,
-    options?: ToolkitOptions<VE, MM>,
-  ) {
-    if (!this._instance) this._instance = new Toolkit(configEnv, options)
-    return this._instance
+  static createInstance<VE extends Env>(configEnv: ConfigEnv, options: ToolkitOptions<VE> = {}) {
+    if (!Toolkit._instance) Toolkit._instance = new Toolkit(configEnv, options)
+    return Toolkit._instance
   }
 
   /**
    * 获取唯一实例
    */
-  static getInstance<VE extends Env, MM extends ModeMapping = ModeMapping>(): Toolkit<
-    VE,
-    MM
-  > | null {
-    return this._instance
+  static getInstance<VE extends Env>(): Toolkit<VE> | null {
+    return Toolkit._instance
   }
 
   /**
@@ -104,46 +82,92 @@ export class Toolkit<VE extends Env, MM extends ModeMapping = ModeMapping> {
     return transformEnv(viteEnv, allowMountToProcessEnv, envTransformer)
   }
 
-  flattenEnv = flattenEnv
-
-  getMode(key: ModeMappingKey<MM>) {
-    return this.options.modeMapping[key]
+  /**
+   * 获取当前模式
+   */
+  getMode() {
+    return this.configEnv.mode
   }
 
-  eqMode(key: ModeMappingKey<MM>) {
-    return this.getMode(key) === this.configEnv.mode
+  /**
+   * 判断当前模式是否为指定模式
+   */
+  eqMode(mode: string) {
+    return this.getMode() === mode
   }
 
-  isDev() {
-    return this.eqMode('dev')
+  /**
+   * 判断指定模式是否为内置模式
+   *
+   * 内置模式：
+   * - `development`
+   * - `production`
+   */
+  isBuiltinMode(mode = this.getMode()) {
+    return ['development', 'production'].includes(mode)
   }
 
+  /**
+   * 获取 `NODE_ENV`
+   */
+  getNodeEnv() {
+    return env.NODE_ENV
+  }
+
+  /**
+   * 判断当前环境是否为指定环境
+   */
+  eqNodeEnv(nodeEnv: string) {
+    return env.NODE_ENV === nodeEnv
+  }
+
+  /**
+   * 是否为生产环境
+   */
   isProd() {
-    return this.eqMode('prod')
+    return this.eqNodeEnv('production')
   }
 
-  isTest() {
-    return this.eqMode('prod')
+  /**
+   * 是否为开发环境
+   */
+  isDev() {
+    return !this.isProd()
   }
 
+  /**
+   * 获取当前执行命令
+   */
+  getCommand() {
+    return this.configEnv.command
+  }
+
+  /**
+   * 判断当前执行命令是否为指定命令
+   */
   eqCommand(cmd: ConfigEnv['command']) {
-    return this.configEnv.command === cmd
+    return this.getCommand() === cmd
   }
 
+  /**
+   * 是否为 `build` 命令
+   */
   isBuild() {
     return this.eqCommand('build')
   }
 
+  /**
+   * 是否为 `serve` 命令
+   */
   isServe() {
     return this.eqCommand('serve')
   }
 
-  createProxy = createProxy
+  flattenEnv = flattenEnv
+
+  transformProxy = transformProxy
 }
 
-export function createToolkit<VE extends Env, MM extends ModeMapping = ModeMapping>(
-  configEnv: ConfigEnv,
-  options?: ToolkitOptions<VE, MM>,
-) {
-  return new Toolkit<VE, MM>(configEnv, options)
+export function createToolkit<VE extends Env>(configEnv: ConfigEnv, options?: ToolkitOptions<VE>) {
+  return new Toolkit<VE>(configEnv, options)
 }

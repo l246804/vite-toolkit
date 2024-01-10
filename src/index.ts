@@ -1,5 +1,4 @@
 export * from './Toolkit'
-export * from './modeMapping'
 export * from './transformEnv'
-export * from './createProxy'
+export * from './transformProxy'
 export * from './flattenEnv'

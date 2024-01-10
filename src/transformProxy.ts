@@ -17,7 +17,7 @@ export type ProxyTargetList = Recordable<ProxyOptions>
  * 创建开发服务代理
  * @example
  * ```ts
- * const proxy = createProxy(
+ * const proxy = transformProxy(
  *   [
  *     // normal
  *     ['/api', 'http://xxx.cn/'],
@@ -61,7 +61,7 @@ export type ProxyTargetList = Recordable<ProxyOptions>
  * }
  * ```
  */
-export function createProxy(list: ProxyList = []) {
+export function transformProxy(list: ProxyList = []) {
   const ret: ProxyTargetList = {}
   const httpsRE = /^https:\/\//
   for (const [prefix, target, rewrite, options] of list) {
