@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.0](https://github.com/l246804/vite-toolkit/compare/v0.2.1...v2.0.0) (2024-01-10)
+
+
+### Refactors
+
+* 💡 重构 ViteToolkit ([ada378b](https://github.com/l246804/vite-toolkit/commit/ada378b9fba8333a2be7744493a8091de63e4acd))
+* 💡 flattenEnv 不再支持非普通对象类型数据深度扁平化属性 ([c3597c9](https://github.com/l246804/vite-toolkit/commit/c3597c92d576b0237901339fc2d0857c9d58eed4))
+
 ## [1.0.0](https://github.com/l246804/vite-toolkit/compare/v0.2.1...v1.0.0) (2023-12-24)
 
 
